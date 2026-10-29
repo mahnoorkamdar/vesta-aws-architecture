@@ -1,11 +1,11 @@
 # Vesta.pk — Redesigning a Publicly-Exposed AWS E-Commerce Architecture
 
-A security-focused redesign of a vulnerable e-commerce infrastructure on AWS.
-The original setup put EC2, RDS, and S3 directly on the public internet.
-This project walks through turning that into a defense-in-depth architecture,
-one layer at a time, and explains the reasoning behind every change.
+This is a hypothetical scenario I asked myself regarding a business venture, where as a cloud architect what would be my approach to a e-commerce infrastructure which is currently exposed. 
+The original setup of the project put EC2, RDS, and S3 directly on the public internet.
+This case study and solution walks through turning that into a defense-in-depth architecture,
+one layer at a time, and explains the reasoning behind why I made every change.
 
-> **Status:** architecture design / case study (diagrammed and documented;
+> **Status:** This is just a case study (diagrammed and documented;
 > not currently deployed). Built as a learning project to go deep on AWS
 > network and identity security.
 
@@ -175,43 +175,15 @@ happens without a record.
 | No automated threat detection | Continuous monitoring | GuardDuty |
 | Configuration drift unnoticed | Compliance/config tracking | AWS Config |
 
----
-
-## What I'd Add at Production Scale
-
-This case study covers the core security redesign. At real production
-scale, I'd extend it with:
-
-- **AWS Shield Advanced** for DDoS protection on top of WAF.
-- **AWS Managed Rules** for WAF instead of relying only on custom rules.
-- **Cross-region backups / disaster recovery plan** for RDS.
-- **A dedicated CI/CD deploy role**, separate from the application's
-  runtime role, so deployment permissions and runtime permissions are
-  never the same identity.
-- **CloudFront + S3 Origin Access Control** for serving static assets
-  (product images) without making the bucket itself public.
-- A documented **secret rotation schedule** rather than relying on
-  defaults.
 
 ---
 
 ## Tools Used
 
-- **Python (`diagrams` library)** — all architecture diagrams in this
-  repo are generated as code (`*.py` files alongside the PNGs), not
-  hand-drawn, so they're versioned and easy to regenerate as the design
-  changes.
 - AWS services covered: VPC, Subnets, Internet Gateway, NAT Gateway, ALB,
   WAF, EC2, RDS, S3, IAM, Secrets Manager, Systems Manager, CloudTrail,
   CloudWatch, GuardDuty, Config, KMS, Route 53, ACM.
 
-To regenerate any diagram:
-
-```bash
-pip install diagrams
-python3 diagram_before_insecure.py
-python3 step_by_step_diagrams.py
-```
 
 ---
 
